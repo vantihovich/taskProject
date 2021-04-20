@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package creds;
+option go_package ="C:/Users/v.antsikhovich/Projects/TaskProject/proto";
+
+service Creds {
+    rpc GenerateToken(Request) returns (Response) {}
+}
+
+message Request {
+    string email = 1;
+    string password = 2;
+}
+
+message Response {
+    string token = 3;
+    string expires_at = 4;
+}
