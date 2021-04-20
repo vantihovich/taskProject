@@ -3,7 +3,7 @@ syntax = "proto3";
 package creds;
 option go_package ="github.com/vantihovich/taskProject/proto";
 
-service Creds {
+service GetCreds {
     rpc GenerateToken(Request) returns (Response) {}
 }
 

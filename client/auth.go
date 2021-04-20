@@ -68,7 +68,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	client := ps.NewTokenGeneratorServiceClient(conn)
+	client := ps.NewGetCredsClient(conn)
 
 	resp, err := client.GenerateToken(context.Background(),
 		&ps.Request{params})
@@ -76,5 +76,5 @@ func main() {
 	if err != nil {
 		log.Fatalf("could not get answer: %v", err)
 	}
-	log.Println("Token and expires_at are:", resp.token, resp.expires_at)
+	log.Println("Token and expires_at are:", resp.Token, resp.ExpiresAt)
 }
