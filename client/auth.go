@@ -12,8 +12,8 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	ps "github.com/vantihovich/taskProject/proto"
 	"google.golang.org/grpc"
-	ps "C:/Users/v.antsikhovich/Projects/TaskProject/proto"
 )
 
 func hello(w http.ResponseWriter, r *http.Request) {
@@ -67,14 +67,14 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	
+
 	client := ps.NewTokenGeneratorServiceClient(conn)
-	
+
 	resp, err := client.GenerateToken(context.Background(),
-          &ps.Request{params})
-        
-    if err != nil {
-        log.Fatalf("could not get answer: %v", err)
-    }
-    log.Println("Token and expires at are:", resp.token, resp.expires_at)
+		&ps.Request{params})
+
+	if err != nil {
+		log.Fatalf("could not get answer: %v", err)
+	}
+	log.Println("Token and expires_at are:", resp.token, resp.expires_at)
 }
