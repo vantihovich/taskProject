@@ -13,6 +13,8 @@ import (
 	"google.golang.org/grpc"
 )
 
+var cli ps.GetCredsClient
+
 func hello(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Эта строка должна быть видна в браузере")
 }
@@ -46,15 +48,16 @@ func login(l http.ResponseWriter, k *http.Request) {
 	fmt.Println("the user:", email)
 	fmt.Println("the password:", password)
 
-	fmt.Println("Старт gRPC клиента")
+	// fmt.Println("Старт gRPC клиента")
 
-	conn, err := grpc.Dial("127.0.0.1:3500", grpc.WithInsecure())
-	if err != nil {
-		log.Fatal(err)
-	}
+	// conn, err := grpc.Dial("127.0.0.1:3500", grpc.WithInsecure())
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
-	client := ps.NewGetCredsClient(conn)
-	resp, err2 := client.GenerateToken(context.Background(),
+	// client := ps.NewGetCredsClient(conn)
+
+	resp, err2 := cli.GenerateToken(context.Background(),
 		&ps.Request{
 			Email:    email,
 			Password: password,
@@ -66,7 +69,19 @@ func login(l http.ResponseWriter, k *http.Request) {
 	log.Println("Token and expires_at are:", resp.Token, resp.ExpiresAt)
 }
 
+func gRPC_connect() (c ps.GetCredsClient) {
+	conn, err := grpc.Dial("127.0.0.1:3500", grpc.WithInsecure())
+	if err != nil {
+		log.Fatal(err)
+	}
+	c = ps.NewGetCredsClient(conn)
+	return c
+}
+
 func main() {
+	fmt.Println("Старт gRPC клиента")
+	cli = gRPC_connect()
+
 	fmt.Println("Старт клиента")
 
 	r := mux.NewRouter()
