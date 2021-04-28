@@ -1,4 +1,4 @@
-package auth
+package pkg
 
 import (
 	"context"
@@ -65,7 +65,7 @@ func login(l http.ResponseWriter, k *http.Request) {
 	log.Println("Token and expires_at are:", resp.Token, resp.ExpiresAt)
 }
 
-func auth() {
+func pkg() {
 	fmt.Println("Старт gRPC клиента")
 
 	cli = gr.Grpc_connect()
