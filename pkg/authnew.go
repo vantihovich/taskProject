@@ -44,15 +44,6 @@ func login(l http.ResponseWriter, k *http.Request) {
 	fmt.Println("the user:", email)
 	fmt.Println("the password:", password)
 
-	// fmt.Println("Старт gRPC клиента")
-
-	// conn, err := grpc.Dial("127.0.0.1:3500", grpc.WithInsecure())
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// client := ps.NewGetCredsClient(conn)
-
 	resp, err2 := cli.GenerateToken(context.Background(),
 		&ps.Request{
 			Email:    email,
@@ -63,12 +54,14 @@ func login(l http.ResponseWriter, k *http.Request) {
 		log.Fatalf("could not get answer: %v", err2)
 	}
 	log.Println("Token and expires_at are:", resp.Token, resp.ExpiresAt)
+	fmt.Fprint(l, "Token and expires_at are:", resp.Token, resp.ExpiresAt)
 }
 
 func main() {
 	fmt.Println("Старт gRPC клиента")
 
-	cli = gr.Grpc_connect()
+	cli = gr.GrpcCliConn()
+
 	fmt.Println("Старт клиента")
 
 	r := mux.NewRouter()
