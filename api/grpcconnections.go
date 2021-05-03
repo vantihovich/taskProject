@@ -25,9 +25,19 @@ type TokenGeneratorServiceServer struct {
 func (s TokenGeneratorServiceServer) GenerateToken(c context.Context, req *ps.Request) (*ps.Response, error) {
 	c = context.Background()
 	var err error
+	
+	
+	connect_to_DB(){}
+	
+	
+	
+	generate token(if check = 1)(token, expires_at){}
+	
+	
 	response := new(ps.Response)
-
 	response.Token, response.ExpiresAt = req.Email, req.Password
+	
+	check (connect_to_DB, user req.Email, password req.Password)( combExists bool){}
 
 	fmt.Println("Параметры генерации токена на сервере:", response.Token, response.ExpiresAt)
 
