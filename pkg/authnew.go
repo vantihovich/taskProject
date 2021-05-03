@@ -10,6 +10,7 @@ import (
 
 	"github.com/gorilla/mux"
 	gr "github.com/vantihovich/taskProject/api"
+	hndl "github.com/vantihovich/taskProject/handlers"
 	ps "github.com/vantihovich/taskProject/proto"
 )
 
@@ -66,7 +67,7 @@ func main() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/login", login)
-	//r.HandleFunc("/", hello)
+	r.HandleFunc("/", hndl.hello())
 	log.Fatal(http.ListenAndServe(":3000", r))
 
 }

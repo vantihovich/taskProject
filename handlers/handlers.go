@@ -1,12 +1,17 @@
 package handle
-import
-	"fmt"
+
+import (
 	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
+
+	ps "github.com/vantihovich/taskProject/proto"
+)
+
+var cli ps.GetCredsClient
 
 func hello(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Эта строка должна быть видна в браузере")
