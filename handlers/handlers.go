@@ -14,8 +14,6 @@ import (
 	ps "github.com/vantihovich/taskProject/proto"
 )
 
-//var cli ps.GetCredsClient
-
 type user struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
@@ -50,8 +48,6 @@ func Login(l http.ResponseWriter, k *http.Request) {
 	password := params.Password
 	fmt.Println("the user:", email)
 	fmt.Println("the password:", password)
-
-	//resp, err2 :=   cli.GenerateToken (context.Background(),
 
 	resp, err2 := gr.Cli.GenerateToken(context.Background(),
 		&ps.Request{

@@ -12,12 +12,8 @@ import (
 	hndl "github.com/vantihovich/taskProject/handlers"
 )
 
-//var Cli ps.GetCredsClient
-
 func main() {
 	fmt.Println("Старт gRPC клиента")
-
-	//Cli := gr.GrpcCliConn()
 
 	gr.GrpcCliConn()
 
