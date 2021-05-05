@@ -5,27 +5,33 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+
 	"log"
 	"net/http"
+
+	//"os"
 
 	ps "github.com/vantihovich/taskProject/proto"
 )
 
 var cli ps.GetCredsClient
 
-func hello(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Эта строка должна быть видна в браузере")
+type user struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
-func login(l http.ResponseWriter, k *http.Request) {
+func Hello(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Fprint(w, "Эта строка должна быть видна в браузере")
+
+	return
+}
+
+func Login(l http.ResponseWriter, k *http.Request) {
 	l.Header().Set("Content-Type", "application/json")
 
-	type User struct {
-		Email    string `json:"email"`
-		Password string `json:"password"`
-	}
-
-	params := User{}
+	params := user{}
 
 	err := json.NewDecoder(k.Body).Decode(&params)
 
