@@ -48,15 +48,6 @@ func login(l http.ResponseWriter, k *http.Request) {
 	fmt.Println("the user:", email)
 	fmt.Println("the password:", password)
 
-	// fmt.Println("Старт gRPC клиента")
-
-	// conn, err := grpc.Dial("127.0.0.1:3500", grpc.WithInsecure())
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// client := ps.NewGetCredsClient(conn)
-
 	resp, err2 := cli.GenerateToken(context.Background(),
 		&ps.Request{
 			Email:    email,

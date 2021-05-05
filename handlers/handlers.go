@@ -10,11 +10,11 @@ import (
 	"net/http"
 
 	//"os"
-
+	gr "github.com/vantihovich/taskProject/api"
 	ps "github.com/vantihovich/taskProject/proto"
 )
 
-var cli ps.GetCredsClient
+//var cli ps.GetCredsClient
 
 type user struct {
 	Email    string `json:"email"`
@@ -25,7 +25,6 @@ func Hello(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprint(w, "Эта строка должна быть видна в браузере")
 
-	return
 }
 
 func Login(l http.ResponseWriter, k *http.Request) {
@@ -52,7 +51,9 @@ func Login(l http.ResponseWriter, k *http.Request) {
 	fmt.Println("the user:", email)
 	fmt.Println("the password:", password)
 
-	resp, err2 := cli.GenerateToken(context.Background(),
+	//resp, err2 :=   cli.GenerateToken (context.Background(),
+
+	resp, err2 := gr.Cli.GenerateToken(context.Background(),
 		&ps.Request{
 			Email:    email,
 			Password: password,
