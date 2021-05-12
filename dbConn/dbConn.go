@@ -1,4 +1,4 @@
-package main
+package dbConn
 
 import (
 	"database/sql"
@@ -15,7 +15,7 @@ const (
 	dbname   = "projectdb"
 )
 
-func main() {
+func DbConn() {
 
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
@@ -27,11 +27,6 @@ func main() {
 	}
 
 	//defer db.Close()
-
-	err = db.Ping()
-	if err != nil {
-		panic(err)
-	}
 
 	fmt.Println("Successfully connected!")
 }
