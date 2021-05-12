@@ -7,6 +7,8 @@ import (
 	_ "github.com/lib/pq"
 )
 
+var Db *sql.DB
+
 const (
 	host     = "localhost"
 	port     = 5432
@@ -15,7 +17,7 @@ const (
 	dbname   = "projectdb"
 )
 
-func DbConn() {
+func DbConn() (Db *sql.DB) {
 
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
@@ -29,4 +31,5 @@ func DbConn() {
 	//defer db.Close()
 
 	fmt.Println("Successfully connected!")
+	return Db
 }

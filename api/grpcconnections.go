@@ -46,8 +46,6 @@ func (s TokenGeneratorServiceServer) GenerateToken(c context.Context, req *ps.Re
 	var err error
 	response := new(ps.Response)
 
-	//connect_to_DB(){}
-
 	//check (connect_to_DB, user req.Email, password req.Password)( combExists bool){}
 
 	//generate token(if check = 1)(token, expires_at){}

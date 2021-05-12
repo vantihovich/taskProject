@@ -9,6 +9,7 @@ import (
 	"github.com/gorilla/mux"
 	gr "github.com/vantihovich/taskProject/api"
 
+	dbconn "github.com/vantihovich/taskProject/dbConn"
 	hndl "github.com/vantihovich/taskProject/handlers"
 )
 
@@ -16,6 +17,10 @@ func main() {
 	fmt.Println("Старт gRPC клиента")
 
 	gr.GrpcCliConn()
+
+	fmt.Println("Установка связи с БД")
+
+	dbconn.DbConn()
 
 	fmt.Println("Старт клиента")
 
