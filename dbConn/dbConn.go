@@ -23,7 +23,7 @@ func DbConn() (Db *sql.DB) {
 		"password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
 
-	db, err := sql.Open("postgres", psqlInfo)
+	Db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		panic(err)
 	}
