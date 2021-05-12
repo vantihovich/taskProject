@@ -10,7 +10,7 @@ import (
 const (
 	host     = "localhost"
 	port     = 5432
-	user     = "use"
+	user     = "user"
 	password = "123qazWSX"
 	dbname   = "projectdb"
 )
