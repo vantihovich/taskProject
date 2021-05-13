@@ -6,6 +6,7 @@ import (
 	"log"
 	"net"
 
+	in "github.com/vantihovich/taskProject/internal"
 	ps "github.com/vantihovich/taskProject/proto"
 	"google.golang.org/grpc"
 )
@@ -46,7 +47,10 @@ func (s TokenGeneratorServiceServer) GenerateToken(c context.Context, req *ps.Re
 	var err error
 	response := new(ps.Response)
 
-	//check (connect_to_DB, user req.Email, password req.Password)( combExists bool){}
+	fmt.Println("Параметры принятые сервером:", req.Email, req.Password)
+	t := in.Check(req.Email, req.Password)
+
+	fmt.Println(" креды найдены или нет", t)
 
 	//generate token(if check = 1)(token, expires_at){}
 
