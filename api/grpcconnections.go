@@ -48,6 +48,7 @@ func (s TokenGeneratorServiceServer) GenerateToken(c context.Context, req *ps.Re
 	response := new(ps.Response)
 
 	fmt.Println("Параметры принятые сервером:", req.Email, req.Password)
+
 	t := in.Check(req.Email, req.Password)
 
 	fmt.Println(" креды найдены или нет", t)

@@ -7,8 +7,6 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var Db *sql.DB
-
 const (
 	host     = "localhost"
 	port     = 5432
@@ -31,5 +29,6 @@ func DbConn() (Db *sql.DB) {
 	//defer db.Close()
 
 	fmt.Println("Successfully connected!")
+
 	return Db
 }
