@@ -7,6 +7,10 @@ import (
 
 var Db *sql.DB
 
+func Print() {
+	fmt.Println("Print sent DB:", Db)
+}
+
 func Check(username string, password string) (combExists bool) {
 
 	var e bool
