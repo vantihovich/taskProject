@@ -21,7 +21,7 @@ func main() {
 
 	fmt.Println("Установка связи с БД")
 
-	postgr.DB
+	postgr.DB.Open()
 
 	//dbconn.DbConn()
 
