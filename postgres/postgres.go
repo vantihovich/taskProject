@@ -1,73 +1,48 @@
 package postgres
 
 import (
+	"context"
 	"fmt"
 
+	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 	_ "github.com/lib/pq"
+	cnfg "github.com/vantihovich/taskProject/Conf"
 )
 
-// const (
-// 	host     = "localhost"
-// 	port     = 5432
-// 	user     = "user"
-// 	password = "123qazWSX"
-// 	dbname   = "projectdb"
-// )
-
-type Config struct {
-	Host     string
-	Port     string
-	User     string
-	Password string
-	Database string
-}
-
 type DB struct {
-	Pool *pgxpool.Pool
-	cfg  Config
+	pool *pgxpool.Pool
+	cfg  cnfg.Config
 }
 
-func New(cfg Config) (db DB) {
-	db.cfg = cfg
+func New(cfg cnfg.Config) (db DB) {
+	db.cfg = cnfg.Configs()
 	return db
 }
 
-func (db *DB) Open(db DB, err error) {
-	db.cfg = cfg
-	pool, err := pgxpool.Connect(DB.cfg)
+func (db *DB) Open(err error) {
+	pool, err := pgxpool.Connect(context.Background(), db.cfg.Database)
 	if err != nil {
-		return err
+		fmt.Println("Unable to connection to database: %v\n", err)
 	}
 
 	fmt.Println("Successfully connected!")
 	db.pool = pool
-	return db, nil
+
+}
+
+func (db *DB) QueryRow(ctx, sql string, args DB) pgx.Row {
+	return db.pool.QueryRow(context.Background(), sql, args)
+}
+
+func (db *DB) Query(ctx, sql string, args DB) (pgx.Row, error) {
+	return db.pool.Query(context.Background(), sql, args)
+}
+
+func (db *DB) Exec(ctx, sql string, args DB) ([]byte, error) {
+	return db.pool.Exec(context.Background(), sql, args)
 }
 
 func (db *DB) Close() {
-
+	db.pool.Close()
 }
-
-// func (db *DB) QueryRow(ctx context.Context, sql string, args ...interface{}) pgx.Row {
-
-// 	var id string
-
-// 	sqlStatement := `SELECT id FROM users WHERE username=$1 and password=$2;`
-// 	fmt.Println("Db in internal:", Db)
-
-// 	row := Db.QueryRow(sqlStatement, username, password)
-
-// 	switch err := row.Scan(&id); err {
-// 	case sql.ErrNoRows:
-// 		fmt.Println("No rows were returned!")
-
-// 	case nil:
-// 		fmt.Println(id)
-
-// 	default:
-// 		panic(err)
-// 	}
-
-// 	return row
-// }
