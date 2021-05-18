@@ -28,7 +28,19 @@ type DB struct {
 	cfg  Config
 }
 
-func new(cfg Config) (db DB, err error) {
+// func New(cfg Config) (db DB, err error) {
+// 	db.cfg = cfg
+// 	pool, err := pgxpool.Connect(DB.cfg)
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	fmt.Println("Successfully connected!")
+// 	db.pool = pool
+// 	return nil
+// }
+
+func (db *DB) Open(db DB, err error) {
 	db.cfg = cfg
 	pool, err := pgxpool.Connect(DB.cfg)
 	if err != nil {
@@ -37,7 +49,7 @@ func new(cfg Config) (db DB, err error) {
 
 	fmt.Println("Successfully connected!")
 	db.pool = pool
-	return nil
+	return db, nil
 }
 
 func (db *DB) Close() {
