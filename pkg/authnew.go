@@ -11,9 +11,8 @@ import (
 	dbconn "github.com/vantihovich/taskProject/dbConn"
 	hndl "github.com/vantihovich/taskProject/handlers"
 	internal "github.com/vantihovich/taskProject/internal"
+	postgr "github.com/vantihovich/taskProject/postgres"
 )
-
-var Db = dbconn.DbConn()
 
 func main() {
 	fmt.Println("Старт gRPC клиента")
@@ -22,8 +21,8 @@ func main() {
 
 	fmt.Println("Установка связи с БД")
 
-	internal.Db = Db
-	fmt.Println("Db in auth:", Db)
+	postgr.DB
+
 	//dbconn.DbConn()
 
 	fmt.Println("Старт клиента")

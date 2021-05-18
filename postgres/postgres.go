@@ -1,60 +1,68 @@
 package postgres
 
 import (
-	"database/sql"
 	"fmt"
 
+	"github.com/jackc/pgx/v4/pgxpool"
 	_ "github.com/lib/pq"
 )
 
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "user"
-	password = "123qazWSX"
-	dbname   = "projectdb"
-)
+// const (
+// 	host     = "localhost"
+// 	port     = 5432
+// 	user     = "user"
+// 	password = "123qazWSX"
+// 	dbname   = "projectdb"
+// )
 
-var DB struct {
+type Config struct {
+	Host     string
+	Port     string
+	User     string
+	Password string
+	Database string
 }
 
-func (DB) Open() {
+type DB struct {
+	Pool *pgxpool.Pool
+	cfg  Config
+}
 
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
-
-	Db, err := sql.Open("postgres", psqlInfo)
+func new(cfg Config) (db DB, err error) {
+	db.cfg = cfg
+	pool, err := pgxpool.Connect(DB.cfg)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	fmt.Println("Successfully connected!")
+	db.pool = pool
+	return nil
 }
 
-func (DB) Close() {
+func (db *DB) Close() {
 
 }
 
-func (DB) QueryRow(ctx context.Context, sql string, args ...interface{}) pgx.Row {
-	var e bool
-	var id string
+// func (db *DB) QueryRow(ctx context.Context, sql string, args ...interface{}) pgx.Row {
 
-	sqlStatement := `SELECT id FROM users WHERE username=$1 and password=$2;`
-	fmt.Println("Db in internal:", Db)
+// 	var id string
 
-	row := Db.QueryRow(sqlStatement, username, password)
+// 	sqlStatement := `SELECT id FROM users WHERE username=$1 and password=$2;`
+// 	fmt.Println("Db in internal:", Db)
 
-	switch err := row.Scan(&id); err {
-	case sql.ErrNoRows:
-		fmt.Println("No rows were returned!")
-		e = false
-	case nil:
-		fmt.Println(id)
-		e = true
-	default:
-		panic(err)
-	}
+// 	row := Db.QueryRow(sqlStatement, username, password)
 
-	return e
-}
+// 	switch err := row.Scan(&id); err {
+// 	case sql.ErrNoRows:
+// 		fmt.Println("No rows were returned!")
+
+// 	case nil:
+// 		fmt.Println(id)
+
+// 	default:
+// 		panic(err)
+// 	}
+
+// 	return row
+// }
