@@ -22,11 +22,9 @@ func main() {
 
 	fmt.Println("Установка связи с БД")
 
-	postgr.DB.Open()
-
-	//dbconn.DbConn()
-
-	fmt.Println("Старт клиента")
+	postgr.New(cfg.Database)
+	postgr.
+		fmt.Println("Старт клиента")
 
 	r := mux.NewRouter()
 	r.HandleFunc("/login", hndl.Login)

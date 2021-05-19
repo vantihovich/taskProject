@@ -7,12 +7,12 @@ import (
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 	_ "github.com/lib/pq"
-	cnfg "github.com/vantihovich/taskProject/Conf"
+	cnfg "github.com/vantihovich/taskProject/configuration"
 )
 
 type DB struct {
 	pool *pgxpool.Pool
-	cfg  cnfg.Config
+	cfg  string
 }
 
 func New(cfg cnfg.Config) (db DB) {
@@ -21,7 +21,8 @@ func New(cfg cnfg.Config) (db DB) {
 }
 
 func (db *DB) Open(err error) {
-	pool, err := pgxpool.Connect(context.Background(), db.cfg.Database)
+
+	pool, err := pgxpool.Connect(context.Background(), db.cfg)
 	if err != nil {
 		fmt.Println("Unable to connection to database: %v\n", err)
 	}
