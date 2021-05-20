@@ -16,6 +16,9 @@ import (
 )
 
 func main() {
+	fmt.Println("Загрузга конфигов")
+	cfg, err := config.Load()
+
 	fmt.Println("Старт gRPC клиента")
 
 	gr.GrpcCliConn()
