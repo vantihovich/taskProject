@@ -21,6 +21,7 @@ func main() {
 	cfg, _ := cnfg.Load()
 
 	fmt.Println("Установка связи с БД")
+
 	postgr.New(cfg)
 	(*postgr.DB).Open
 

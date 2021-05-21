@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/caarlos0/env/v6"
 )
@@ -27,7 +28,10 @@ func Load() (cfgDb string, err error) {
 		fmt.Printf("%+v\n", err)
 	}
 
-	cfgDb = fmt.Sprintf("%+v", cfg.Database)
+	cff := fmt.Sprintf("%+v", cfg.Database)
+
+	cff2 := strings.TrimPrefix(cff, "{")
+	cfgDb = strings.TrimSuffix(cff2, "}")
 
 	fmt.Println("The configs are:", cfgDb)
 	return cfgDb, err

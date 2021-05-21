@@ -16,11 +16,12 @@ type DB struct {
 
 func New(cfg string) (db DB) {
 	db.cfg = cfg
+	fmt.Println("Added configs to DB struct", db.cfg)
 	return db
 }
 
 func (db *DB) Open() {
-
+	fmt.Println("Trying to start method Open")
 	pool, err := pgxpool.Connect(context.Background(), db.cfg)
 	if err != nil {
 		fmt.Println("Unable to connect to database: %v\n", err)
@@ -28,7 +29,7 @@ func (db *DB) Open() {
 
 	fmt.Println("Successfully connected!")
 	db.pool = pool
-
+	//return err
 }
 
 func (db *DB) QueryRow(ctx, sql string, args DB) pgx.Row {
