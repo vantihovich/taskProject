@@ -1,5 +1,4 @@
-//package config
-package main
+package config
 
 import (
 	"fmt"
@@ -19,16 +18,17 @@ type App struct {
 	Database Database
 }
 
-//func Load(App, err) {
-func main() {
+//func Load(cfg App, err error) (string, error) {
+
+func Load() (cfgDb string, err error) {
 
 	cfg := App{}
 	if err := env.Parse(&cfg); err != nil {
 		fmt.Printf("%+v\n", err)
 	}
 
-	cffg := fmt.Sprintf("%+v", cfg.Database)
-	fmt.Println("Struct with configs", cfg)
+	cfgDb = fmt.Sprintf("%+v", cfg.Database)
 
-	fmt.Println("The configs are:", cffg)
+	fmt.Println("The configs are:", cfgDb)
+	return cfgDb, err
 }
