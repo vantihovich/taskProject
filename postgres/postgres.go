@@ -17,7 +17,7 @@ type DB struct {
 
 func New(cfg config.App) (db DB) {
 	db.cfg = fmt.Sprintf("postgresql://%s:%s@%s:%d/%s?%s", cfg.Database.User, cfg.Database.Password, cfg.Database.Host, cfg.Database.Port, cfg.Database.Database)
-	fmt.Println("Added configs to DB struct", db.cfg)
+	fmt.Println("Added configs to DB")
 	return db
 }
 
@@ -28,7 +28,7 @@ func (db *DB) Open() error {
 		return err
 	}
 
-	fmt.Println("Successfully connected!")
+	fmt.Println("Successfully connected to DB!")
 	db.pool = pool
 	return nil
 }

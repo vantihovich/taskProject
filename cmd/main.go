@@ -17,12 +17,12 @@ import (
 )
 
 func main() {
-	fmt.Println("Загрузга конфигов")
+	fmt.Println("Configs loading")
 	cfg, err := cnfg.Load()
 	if err != nil {
 		panic("Failed to load app config")
 	}
-	fmt.Println("Установка связи с БД")
+	fmt.Println("Connecting to DB")
 
 	db := postgr.New(cfg)
 
@@ -30,10 +30,10 @@ func main() {
 		panic("Failed to establish DB connection")
 	}
 
-	fmt.Println("Старт gRPC клиента")
+	fmt.Println("Starting gRPC client")
 	gr.GrpcCliConn()
 
-	fmt.Println("Старт клиента")
+	fmt.Println("Strating client")
 
 	r := mux.NewRouter()
 	r.HandleFunc("/login", hndl.Login)
