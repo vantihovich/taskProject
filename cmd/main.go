@@ -8,11 +8,8 @@ import (
 
 	"github.com/gorilla/mux"
 	gr "github.com/vantihovich/taskProject/api"
-
-	//dbconn "github.com/vantihovich/taskProject/dbConn"
-	hndl "github.com/vantihovich/taskProject/handlers"
-	//internal "github.com/vantihovich/taskProject/internal"
 	cnfg "github.com/vantihovich/taskProject/configuration"
+	hndl "github.com/vantihovich/taskProject/handlers"
 	postgr "github.com/vantihovich/taskProject/postgres"
 )
 
