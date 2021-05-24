@@ -22,7 +22,6 @@ func New(cfg config.App) (db DB) {
 }
 
 func (db *DB) Open() error {
-	fmt.Println("Trying to start method Open")
 	pool, err := pgxpool.Connect(context.Background(), db.cfg)
 	if err != nil {
 		fmt.Println("Unable to connect to database: %v\n", err)

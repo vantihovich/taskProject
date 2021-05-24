@@ -25,7 +25,5 @@ func Load() (App, error) {
 
 		return App{}, err
 	}
-
-	fmt.Println("The configs are:", cfg)
 	return cfg, nil
 }
