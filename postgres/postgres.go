@@ -7,6 +7,7 @@ import (
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 	_ "github.com/lib/pq"
+	"github.com/vantihovich/taskProject/configuration"
 )
 
 type DB struct {
@@ -14,22 +15,23 @@ type DB struct {
 	cfg  string
 }
 
-func New(cfg string) (db DB) {
-	db.cfg = cfg
+func New(cfg config.App) (db DB) {
+	db.cfg = fmt.Sprintf("postgresql://%s:%s@%s:%d/%s?%s", cfg.Database.User, cfg.Database.Password, cfg.Database.Host, cfg.Database.Port, cfg.Database.Database)
 	fmt.Println("Added configs to DB struct", db.cfg)
 	return db
 }
 
-func (db *DB) Open() {
+func (db *DB) Open() error {
 	fmt.Println("Trying to start method Open")
 	pool, err := pgxpool.Connect(context.Background(), db.cfg)
 	if err != nil {
 		fmt.Println("Unable to connect to database: %v\n", err)
+		return err
 	}
 
 	fmt.Println("Successfully connected!")
 	db.pool = pool
-	//return err
+	return nil
 }
 
 func (db *DB) QueryRow(ctx, sql string, args DB) pgx.Row {

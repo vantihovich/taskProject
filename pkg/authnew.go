@@ -18,12 +18,17 @@ import (
 
 func main() {
 	fmt.Println("Загрузга конфигов")
-	cfg, _ := cnfg.Load()
-
+	cfg, err := cnfg.Load()
+	if err != nil {
+		panic("Failed to load app config")
+	}
 	fmt.Println("Установка связи с БД")
 
-	postgr.New(cfg)
-	(*postgr.DB).Open
+	db := postgr.New(cfg)
+
+	if err := db.Open(); err != nil {
+		panic("Failed to establish DB connection")
+	}
 
 	fmt.Println("Старт gRPC клиента")
 	gr.GrpcCliConn()
