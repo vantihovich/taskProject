@@ -5,11 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-
-	"log"
 	"net/http"
 
-	//"os"
+	log "github.com/sirupsen/logrus"
 	gr "github.com/vantihovich/taskProject/api"
 	ps "github.com/vantihovich/taskProject/proto"
 )
@@ -21,7 +19,7 @@ type user struct {
 
 func Hello(w http.ResponseWriter, r *http.Request) {
 
-	fmt.Fprint(w, "Эта строка должна быть видна в браузере")
+	fmt.Fprint(w, "This string should be seen in browser")
 
 }
 
@@ -33,16 +31,17 @@ func Login(l http.ResponseWriter, k *http.Request) {
 	err := json.NewDecoder(k.Body).Decode(&params)
 
 	if err == io.EOF {
-		log.Println("The error:", err)
+		log.WithFields(log.Fields{"Error": err}).Info("Error empty request body")
 		fmt.Fprint(l, "Please send a request body")
 		return
 	} else if err != nil {
-		log.Println("The error", err)
+		log.WithFields(log.Fields{"Error": err}).Info("Error occurred")
 		http.Error(l, err.Error(), 500)
 		return
 	}
 
-	fmt.Fprint(l, "запрос на логин с параметрами:", params)
+	fmt.Fprint(l, "The request to login with parameters:", params)
+	log.WithFields(log.Fields{"Parameters": params}).Info("The request to login with parameters:")
 
 	email := params.Email
 	password := params.Password
@@ -56,8 +55,8 @@ func Login(l http.ResponseWriter, k *http.Request) {
 		})
 
 	if err2 != nil {
-		log.Fatalf("could not get answer: %v", err2)
+		log.WithFields(log.Fields{"Error": err2}).Panicf("could not get answer:")
 	}
-	log.Println("Token and expires_at are:", resp.Token, resp.ExpiresAt)
+	log.WithFields(log.Fields{"Token": resp.Token, "Expires_at": resp.ExpiresAt}).Info("could not get answer:")
 	fmt.Fprint(l, "Token and expires_at are:", resp.Token, resp.ExpiresAt)
 }

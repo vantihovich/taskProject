@@ -6,6 +6,7 @@ import (
 
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
+	log "github.com/sirupsen/logrus"
 	"github.com/vantihovich/taskProject/configuration"
 )
 
@@ -16,18 +17,17 @@ type DB struct {
 
 func New(cfg config.App) (db DB) {
 	db.cfg = fmt.Sprintf("postgresql://%s:%s@%s:%d/%s?%s", cfg.Database.User, cfg.Database.Password, cfg.Database.Host, cfg.Database.Port, cfg.Database.Database)
-	fmt.Println("Added configs to DB")
+	log.WithFields(log.Fields{}).Info("Added configs to DB")
 	return db
 }
 
 func (db *DB) Open() error {
 	pool, err := pgxpool.Connect(context.Background(), db.cfg)
 	if err != nil {
-		fmt.Println("Unable to connect to database: %v\n", err)
+		log.WithFields(log.Fields{"Error": err}).Info("Unable to connect to database")
 		return err
 	}
-
-	fmt.Println("Successfully connected to DB!")
+	log.WithFields(log.Fields{}).Info("Successfully connected to DB")
 	db.pool = pool
 	return nil
 }

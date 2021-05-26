@@ -3,9 +3,9 @@ package grpcconn
 import (
 	"context"
 	"fmt"
-	"log"
 	"net"
 
+	log "github.com/sirupsen/logrus"
 	in "github.com/vantihovich/taskProject/internal"
 	ps "github.com/vantihovich/taskProject/proto"
 	"google.golang.org/grpc"
@@ -30,11 +30,11 @@ func GrpcServConn() {
 
 	listener, err := net.Listen("tcp", ":3500")
 	if err != nil {
-		log.Fatal("Unable to create grpc listener:", err)
+		log.WithFields(log.Fields{"error": err}).Panic("Unable to create grpc listener:")
 	}
 
 	if err = server.Serve(listener); err != nil {
-		log.Fatal("Unable to start server:", err)
+		log.WithFields(log.Fields{"error": err}).Panic("Unable to start server")
 	}
 
 }
@@ -47,17 +47,18 @@ func (s TokenGeneratorServiceServer) GenerateToken(c context.Context, req *ps.Re
 	var err error
 	response := new(ps.Response)
 
-	fmt.Println("Параметры принятые сервером:", req.Email, req.Password)
+	log.WithFields(log.Fields{}).Info("Parameters received by server")
+	//fmt.Println("Параметры принятые сервером:", req.Email, req.Password)
 
 	t := in.Check(req.Email, req.Password)
 
-	fmt.Println(" креды найдены или нет", t)
+	fmt.Println("If credentials are found in DB or not", t)
 
 	//generate token(if check = 1)(token, expires_at){}
 
 	response.Token, response.ExpiresAt = req.Email, req.Password
 
-	fmt.Println("Параметры генерации токена на сервере:", response.Token, response.ExpiresAt)
+	log.WithFields(log.Fields{"token": response.Token, "expires_at": response.ExpiresAt}).Info("Parameters for generating token")
 
 	return response, err
 }

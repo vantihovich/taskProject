@@ -1,12 +1,10 @@
 package main
 
 import (
-	"fmt"
-
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	log "github.com/sirupsen/logrus"
 	gr "github.com/vantihovich/taskProject/api"
 	cnfg "github.com/vantihovich/taskProject/configuration"
 	hndl "github.com/vantihovich/taskProject/handlers"
@@ -14,23 +12,25 @@ import (
 )
 
 func main() {
-	fmt.Println("Configs loading")
+	log.WithFields(log.Fields{}).Info("Configs loading")
+
 	cfg, err := cnfg.Load()
 	if err != nil {
-		panic("Failed to load app config")
+		log.WithFields(log.Fields{}).Panic("Failed to load app config")
 	}
-	fmt.Println("Connecting to DB")
+
+	log.WithFields(log.Fields{}).Info("Connecting to DB")
 
 	db := postgr.New(cfg)
 
 	if err := db.Open(); err != nil {
-		panic("Failed to establish DB connection")
+		log.WithFields(log.Fields{}).Panic("Failed to establish DB connection")
 	}
 
-	fmt.Println("Starting gRPC client")
+	log.WithFields(log.Fields{}).Info("Starting gRPC client")
 	gr.GrpcCliConn()
 
-	fmt.Println("Strating client")
+	log.WithFields(log.Fields{}).Info("Strating client")
 
 	r := mux.NewRouter()
 	r.HandleFunc("/login", hndl.Login)

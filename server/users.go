@@ -1,13 +1,13 @@
 package main
 
 import (
-	"fmt"
-
+	log "github.com/sirupsen/logrus"
 	gr "github.com/vantihovich/taskProject/api"
 )
 
 func main() {
-	fmt.Println("Старт сервера")
+
+	log.WithFields(log.Fields{}).Info("Server starting")
 
 	gr.GrpcServConn()
 
