@@ -2,6 +2,7 @@
 LDFLAGS       := -w -s
 BINDIR        := $(CURDIR)/bin
 OS            ?= windows
+PROTODIR      := $(CURDIR)/proto2
 
 #service and environment information
 BASE_NAME     ?= auth
@@ -15,3 +16,8 @@ build:
 run: build
 	$(info Running LOG_LEVEL=$(LOG_LEVEL) APP_PORT=$(APP_PORT) $(BINDIR)/$(SERVICE_NAME))
 	@LOG_LEVEL=$(LOG_LEVEL) APP_PORT=$(APP_PORT) $(BINDIR)/$(SERVICE_NAME)
+	
+proto:
+	$(info Building pb.go and _grpc.pb.go to proto2/)
+	protoc $(PROTODIR)/creds2.proto --go_out=. --go_opt=paths=source_relative 
+	--go-grpc_out=. --go-grpc_opt=paths=source_relative,require_unimplemented_servers=false

@@ -7,12 +7,10 @@ service GetCreds {
     rpc GenerateToken(Request) returns (Response) {}
 }
 
-message Request {
-    string email = 1;
-    string password = 2;
+message Check_proto1{
+	string check = 1000;
 }
 
-message Response {
-    string token = 3;
-    string expires_at = 4;
+message Check_proto2{
+	string check2 = 1001;
 }
