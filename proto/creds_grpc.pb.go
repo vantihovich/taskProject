@@ -39,19 +39,21 @@ func (c *getCredsClient) GenerateToken(ctx context.Context, in *Request, opts ..
 }
 
 // GetCredsServer is the server API for GetCreds service.
-// All implementations should embed UnimplementedGetCredsServer
+// All implementations must embed UnimplementedGetCredsServer
 // for forward compatibility
 type GetCredsServer interface {
 	GenerateToken(context.Context, *Request) (*Response, error)
+	mustEmbedUnimplementedGetCredsServer()
 }
 
-// UnimplementedGetCredsServer should be embedded to have forward compatible implementations.
+// UnimplementedGetCredsServer must be embedded to have forward compatible implementations.
 type UnimplementedGetCredsServer struct {
 }
 
 func (UnimplementedGetCredsServer) GenerateToken(context.Context, *Request) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GenerateToken not implemented")
 }
+func (UnimplementedGetCredsServer) mustEmbedUnimplementedGetCredsServer() {}
 
 // UnsafeGetCredsServer may be embedded to opt out of forward compatibility for this service.
 // Use of this interface is not recommended, as added methods to GetCredsServer will
@@ -95,5 +97,5 @@ var GetCreds_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "proto/creds.proto",
+	Metadata: "creds.proto",
 }

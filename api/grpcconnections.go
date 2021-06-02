@@ -62,3 +62,5 @@ func (s TokenGeneratorServiceServer) GenerateToken(c context.Context, req *ps.Re
 
 	return response, err
 }
+
+func (s TokenGeneratorServiceServer) mustEmbedUnimplementedGetCredsServer() {}
