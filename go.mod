@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/caarlos0/env/v6 v6.6.0
+	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/gorilla/mux v1.8.0
 	github.com/jackc/pgx/v4 v4.11.0
 	github.com/lib/pq v1.10.1 // indirect
