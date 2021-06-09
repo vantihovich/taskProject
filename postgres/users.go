@@ -1,9 +1,5 @@
 package postgres
 
-import (
-	log "github.com/sirupsen/logrus"
-)
-
 type UsersProvider struct {
 	db DB
 }
@@ -20,11 +16,9 @@ func NewUsersProvider(db *DB) *UsersProvider {
 
 func (u *UsersProvider) FindUserByEmailAndPassword(email, password string) (*User, error) {
 	us := User{Email: email, Password: password}
-	row := u.db.QueryRow(`Select id from users where username=$1 and password=$2;`, email, password)
+	row := u.db.QueryRow(`SELECT id FROM users WHERE username=$1 AND password=$2`, email, password)
 	if err := row.Scan(&us.ID); err != nil {
 		return nil, err
 	}
-	log.WithFields(log.Fields{}).Info("The query executed successfully")
-
 	return &us, nil
 }
