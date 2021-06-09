@@ -32,15 +32,15 @@ func (db *DB) Open() error {
 	return nil
 }
 
-func (db *DB) QueryRow(ctx, sql string, args DB) pgx.Row {
+func (db *DB) QueryRow(ctx, sql string, args ...interface{}) pgx.Row {
 	return db.pool.QueryRow(context.Background(), sql, args)
 }
 
-func (db *DB) Query(ctx, sql string, args DB) (pgx.Row, error) {
+func (db *DB) Query(ctx, sql string, args ...interface{}) (pgx.Row, error) {
 	return db.pool.Query(context.Background(), sql, args)
 }
 
-func (db *DB) Exec(ctx, sql string, args DB) ([]byte, error) {
+func (db *DB) Exec(ctx, sql string, args ...interface{}) ([]byte, error) {
 	return db.pool.Exec(context.Background(), sql, args)
 }
 
