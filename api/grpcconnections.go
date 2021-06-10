@@ -6,7 +6,6 @@ import (
 	"net"
 
 	log "github.com/sirupsen/logrus"
-	in "github.com/vantihovich/taskProject/internal"
 	ps "github.com/vantihovich/taskProject/proto"
 	"google.golang.org/grpc"
 )
@@ -41,19 +40,13 @@ func GrpcServConn() {
 type UnimplementedGetCredsServer struct {
 }
 
+//TODO move GenerateToken func to another package
 func (u UnimplementedGetCredsServer) GenerateToken(c context.Context, req *ps.Request) (*ps.Response, error) {
 	c = context.Background()
 	var err error
 	response := new(ps.Response)
 
-	log.WithFields(log.Fields{}).Info("Parameters received by server")
-	//fmt.Println("Параметры принятые сервером:", req.Email, req.Password)
-
-	t := in.Check(req.Email, req.Password)
-
-	fmt.Println("If credentials are found in DB or not", t)
-
-	//generate token(if check = 1)(token, expires_at){}
+	log.WithFields(log.Fields{"Username": req.Email, "password": req.Password}).Info("Parameters received by server")
 
 	response.Token, response.ExpiresAt = req.Email, req.Password
 

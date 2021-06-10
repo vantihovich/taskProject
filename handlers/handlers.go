@@ -9,54 +9,54 @@ import (
 
 	log "github.com/sirupsen/logrus"
 	gr "github.com/vantihovich/taskProject/api"
+	pg "github.com/vantihovich/taskProject/postgres"
 	ps "github.com/vantihovich/taskProject/proto"
 )
 
-type user struct {
+type reqUser struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
-func Hello(w http.ResponseWriter, r *http.Request) {
-
-	fmt.Fprint(w, "This string should be seen in browser")
-
+type LoginHandler struct {
+	usp pg.UsersProvider
 }
 
-func Login(l http.ResponseWriter, k *http.Request) {
-	l.Header().Set("Content-Type", "application/json")
+func NewLoginHandler(up *pg.UsersProvider) *LoginHandler {
+	return &LoginHandler{usp: *up}
+}
 
-	params := user{}
+func (h *LoginHandler) Login(r *http.Request, w http.ResponseWriter) {
+	w.Header().Set("Content-Type", "application/json")
 
-	err := json.NewDecoder(k.Body).Decode(&params)
+	params := reqUser{}
 
+	err := json.NewDecoder(r.Body).Decode(&params)
+
+	//TODO check if conditions are valid here
 	if err == io.EOF {
 		log.WithFields(log.Fields{"Error": err}).Info("Error empty request body")
-		fmt.Fprint(l, "Please send a request body")
+		fmt.Fprint(w, "Please send a request body") //TODO handle the response
 		return
 	} else if err != nil {
 		log.WithFields(log.Fields{"Error": err}).Info("Error occurred")
-		http.Error(l, err.Error(), 500)
+		http.Error(w, err.Error(), 500)
 		return
+	} else {
+		//filling in "User" struct in postgres package and saving it to variable
+		respusr, _ := h.usp.FindUserByEmailAndPassword(params.Email, params.Password) //will check later if err handling is valid here
+
+		//Calling gRPS procedure with params from respusr variable
+		resp, _ := gr.Cli.GenerateToken(context.Background(), //will check later if err handling is valid here
+			&ps.Request{
+				//Id:		  respusr.Id, --the parameter will be added after adding it to proto files
+				Email:    respusr.Email,
+				Password: respusr.Password,
+			})
+		log.WithFields(log.Fields{"Token": resp.Token, "Expires_at": resp.ExpiresAt}).Info("The server responded with:")
 	}
+}
 
-	fmt.Fprint(l, "The request to login with parameters:", params)
-	log.WithFields(log.Fields{"Parameters": params}).Info("The request to login with parameters:")
-
-	email := params.Email
-	password := params.Password
-	fmt.Println("the user:", email)
-	fmt.Println("the password:", password)
-
-	resp, err2 := gr.Cli.GenerateToken(context.Background(),
-		&ps.Request{
-			Email:    email,
-			Password: password,
-		})
-
-	if err2 != nil {
-		log.WithFields(log.Fields{"Error": err2}).Panicf("could not get answer:")
-	}
-	log.WithFields(log.Fields{"Token": resp.Token, "Expires_at": resp.ExpiresAt}).Info("could not get answer:")
-	fmt.Fprint(l, "Token and expires_at are:", resp.Token, resp.ExpiresAt)
+func Hello(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "This string should be seen in browser")
 }
